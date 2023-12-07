@@ -3,6 +3,7 @@ from flask import current_app
 from flask.cli import with_appcontext
 from src.extensions import db, bcrypt  # Adjust the path as needed
 from src.models.user import User
+from src.models.mood_entry import MoodEntry
 from datetime import date
 
 db_commands = Blueprint('db', __name__)

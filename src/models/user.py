@@ -11,6 +11,8 @@ class User(db.Model):
     registration_date = db.Column(db.Date, default=db.func.current_date())
     is_admin = db.Column(db.Boolean, default=False)
 
+    mood_entries = db.relationship('MoodEntry', back_populates='user')
+
 class UserSchema(Schema):
     email = fields.Email(required=True)
     password = fields.String(required=True, validate=validate.Length(min=8, error='Password must be at least 8 characters'))
