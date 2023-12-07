@@ -1,14 +1,14 @@
+# app.py
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-# from flask_marshmallow import Marshmallow
-# from flask_bcrypt import Bcrypt
-# from flask_jwt_extended import JWTManager
-from os import environ
-# from marshmallow.exceptions import ValidationError
+from src.blueprints.main_bp import main_bp
+from src.blueprints.users_bp import users_bp
+from src.blueprints.cli_bp import db_commands
+from src.extensions import app  # Import the app instance
 
-app = Flask(__name__)
+app.register_blueprint(main_bp)
+app.register_blueprint(users_bp)
+app.register_blueprint(db_commands)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DB_URI') # Database connection string
+# Rest of your app initialization, if any
 
-db = SQLAlchemy(app)
 
