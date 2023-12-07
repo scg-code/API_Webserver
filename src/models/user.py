@@ -17,7 +17,7 @@ class UserSchema(Schema):
     email = fields.Email(required=True)
     password = fields.String(required=True, validate=validate.Length(min=8, error='Password must be at least 8 characters'))
     registration_date = fields.Date(dump_only=True) # Read only field for registration date
-    is_admin = fields.Boolean()
+    # is_admin = fields.Boolean()
 
     class Meta:
         fields = ("id", "name", "email", "password", "registration_date", "is_admin")

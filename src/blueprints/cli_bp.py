@@ -1,10 +1,10 @@
+# cli_bp.py
 from flask import Blueprint
-from flask import current_app
 from flask.cli import with_appcontext
 from src.extensions import db, bcrypt  # Adjust the path as needed
 from src.models.user import User
 from src.models.mood_entry import MoodEntry
-from datetime import date
+from datetime import datetime
 
 db_commands = Blueprint('db', __name__)
 
@@ -30,7 +30,6 @@ def db_seed():
             email="sarahjane99@gmail.com",
             password=bcrypt.generate_password_hash("puppy12345").decode("utf8"),
         ),
-
         User(
             name="Andrew Tate",
             email="TopG69@gmail.com",
@@ -40,5 +39,30 @@ def db_seed():
 
     db.session.add_all(users)
     db.session.commit()
-    print("Database Seeded")
+    print("Users Seeded")
 
+    # Dummy Mood Entries
+    mood_entries = [
+        MoodEntry(
+            user_id=1,
+            mood="Happy",
+            note="Feeling great today!",
+            timestamp=datetime.utcnow(),
+        ),
+        MoodEntry(
+            user_id=2,
+            mood="Sad",
+            note="Had a tough day.",
+            timestamp=datetime.utcnow(),
+        ),
+        MoodEntry(
+            user_id=3,
+            mood="Excited",
+            note="Looking forward to the weekend!",
+            timestamp=datetime.utcnow(),
+        ),
+    ]
+
+    db.session.add_all(mood_entries)
+    db.session.commit()
+    print("Mood Entries Seeded")

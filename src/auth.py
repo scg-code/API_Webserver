@@ -2,7 +2,7 @@
 from flask import abort
 from flask_jwt_extended import get_jwt_identity
 from src.models.user import User
-from src.extensions import db  # Update this line
+from src.extensions import db  
 
 def authorize(user_id=None):
     jwt_user_id = get_jwt_identity()
