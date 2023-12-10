@@ -39,7 +39,7 @@ def login():
         return {"error": "Invalid email or password"}, 401
     
 @users_bp.route("/")
-@jwt_required
+@jwt_required()
 def all_users():
     authorize() # Admin Only
     stmt = db.select(User)

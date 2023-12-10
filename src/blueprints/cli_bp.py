@@ -1,10 +1,11 @@
 from flask import Blueprint
-from flask.cli import with_appcontext
+from flask.cli import with_appcontext, current_app
 from src.extensions import db, bcrypt  # Adjust the path as needed
 from src.models.user import User
 from src.models.mood_entry import MoodEntry
 from src.models.thought_journal import ThoughtJournal
 from src.models.goal import Goal
+from src.models.activity_log import ActivityLog
 from datetime import datetime
 
 db_commands = Blueprint('db', __name__)
@@ -99,21 +100,21 @@ def db_seed():
             user_id=1,
             goal="Learn a new programming language",
             description="I want to expand my skill set by learning a new programming language.",
-            deadline=datetime.utcnow().date(),
-            status="Pending",
+            deadline=datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'),
+            status="Completed",
         ),
         Goal(
             user_id=2,
             goal="Complete a marathon",
             description="I have a goal to run a full marathon and improve my endurance.",
-            deadline=datetime.utcnow().date(),
+            deadline=datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'),
             status="Pending",
         ),
         Goal(
             user_id=3,
             goal="Read 20 books this year",
             description="I aim to read 20 books within the next year to broaden my knowledge.",
-            deadline=datetime.utcnow().date(),
+            deadline=datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'),
             status="Pending",
         ),
     ]
@@ -121,3 +122,20 @@ def db_seed():
     db.session.add_all(goals)
     db.session.commit()
     print("Goals Seeded")
+
+
+# Dummy Activities
+    activities = [
+        ActivityLog(user_id=1, activity="Running", timestamp = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')),
+        ActivityLog(user_id=2, activity="Yoga", timestamp = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')),
+        ActivityLog(user_id=3, activity="Gaming", timestamp = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')),
+        ActivityLog(user_id=1, activity="Cycling", timestamp = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')),
+        ActivityLog(user_id=2, activity="Reading", timestamp = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')),
+        ActivityLog(user_id=3, activity="Swimming", timestamp = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'))
+    ]
+
+    with current_app.app_context():
+        db.session.add_all(activities)
+        db.session.commit()
+        print("Activities Seeded")
+
