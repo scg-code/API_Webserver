@@ -3,6 +3,8 @@ from flask.cli import with_appcontext
 from src.extensions import db, bcrypt  # Adjust the path as needed
 from src.models.user import User
 from src.models.mood_entry import MoodEntry
+from src.models.thought_journal import ThoughtJournal
+from src.models.goal import Goal
 from datetime import datetime
 
 db_commands = Blueprint('db', __name__)
@@ -65,3 +67,57 @@ def db_seed():
     db.session.add_all(mood_entries)
     db.session.commit()
     print("Mood Entries Seeded")
+
+
+# Dummy Thought Journals
+    thought_journals = [
+        ThoughtJournal(
+            user_id=1,
+            entry="Today was an amazing day! I woke up early, went for a long run, and then spent the afternoon reading my favorite book. The weather was perfect, and I felt a sense of gratitude for the simple joys in life. It's incredible how a day filled with positive experiences can uplift the spirit.",
+            timestamp=datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'),  # Format timestamp
+        ),
+        ThoughtJournal(
+            user_id=2,
+            entry="Feeling a bit overwhelmed with work. The deadlines are approaching, and there's so much to do. Taking a deep breath and planning to tackle one task at a time. Despite the challenges, I find solace in the progress I've made so far. It's a reminder that every step forward is an achievement.",
+            timestamp=datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'),  # Format timestamp
+        ),
+        ThoughtJournal(
+            user_id=3,
+            entry="Planning a road trip with friends! We're mapping out the route, deciding on interesting stops, and looking forward to creating wonderful memories together. It's going to be an adventure! The excitement of exploring new places and spending quality time with friends brings a sense of anticipation and joy.",
+            timestamp=datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'),  # Format timestamp
+        ),
+    ]
+
+    db.session.add_all(thought_journals)
+    db.session.commit()
+    print("Thought Journals Seeded")
+
+
+# Dummy Goals
+    goals = [
+        Goal(
+            user_id=1,
+            goal="Learn a new programming language",
+            description="I want to expand my skill set by learning a new programming language.",
+            deadline=datetime.utcnow().date(),
+            status="Pending",
+        ),
+        Goal(
+            user_id=2,
+            goal="Complete a marathon",
+            description="I have a goal to run a full marathon and improve my endurance.",
+            deadline=datetime.utcnow().date(),
+            status="Pending",
+        ),
+        Goal(
+            user_id=3,
+            goal="Read 20 books this year",
+            description="I aim to read 20 books within the next year to broaden my knowledge.",
+            deadline=datetime.utcnow().date(),
+            status="Pending",
+        ),
+    ]
+
+    db.session.add_all(goals)
+    db.session.commit()
+    print("Goals Seeded")
