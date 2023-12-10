@@ -1,4 +1,3 @@
-# cli_bp.py
 from flask import Blueprint
 from flask.cli import with_appcontext
 from src.extensions import db, bcrypt  # Adjust the path as needed

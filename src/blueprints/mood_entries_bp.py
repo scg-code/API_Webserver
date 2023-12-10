@@ -1,4 +1,3 @@
-# mood_entries_bp.py
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from src.extensions import db
@@ -63,4 +62,33 @@ def delete_mood_entry(mood_entry_id):
     db.session.commit()
     return jsonify({'message': 'Mood entry deleted successfully'})
 
-# Additional routes (e.g., update) can be added as needed
+@mood_entries_bp.route('/mood_entries/<int:mood_entry_id>', methods=['PUT'])
+@jwt_required()
+def update_mood_entry(mood_entry_id):
+    mood_entry = MoodEntry.query.get_or_404(mood_entry_id)
+    data = request.json
+    mood_entry_schema = MoodEntrySchema()
+
+    try:
+        # Get the user_id from the current user using get_jwt_identity()
+        user_id = get_jwt_identity()
+
+        # Check if the current user is the owner of the mood entry
+        if mood_entry.user_id != user_id:
+            return jsonify({'error': 'Unauthorized'}), 401
+
+        # Update mood entry fields
+        mood_entry.mood = data.get('mood', mood_entry.mood)
+        mood_entry.note = data.get('note', mood_entry.note)
+
+        # Set the timestamp to the current date and time
+        mood_entry.timestamp = datetime.utcnow()
+
+        # Commit the changes to the database
+        db.session.commit()
+
+        # Serialize the updated MoodEntry and return the result
+        result = mood_entry_schema.dump(mood_entry)
+        return jsonify(result), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
