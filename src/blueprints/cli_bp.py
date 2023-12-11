@@ -72,11 +72,12 @@ def db_seed():
 
 # Dummy Thought Journals
     thought_journals = [
-        ThoughtJournal(
-            user_id=1,
-            entry="Today was an amazing day! I woke up early, went for a long run, and then spent the afternoon reading my favorite book. The weather was perfect, and I felt a sense of gratitude for the simple joys in life. It's incredible how a day filled with positive experiences can uplift the spirit.",
-            timestamp=datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'),  # Format timestamp
-        ),
+    ThoughtJournal(
+        user_id=1,
+        entry=("Today was an amazing day! I woke up early, went for a long run, and then spent the afternoon reading my favorite book. "
+               "The weather was perfect, and I felt a sense of gratitude for the simple joys in life. It's incredible how a day filled with positive experiences can uplift the spirit."),
+        timestamp=datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'),  # Format timestamp
+    ),
         ThoughtJournal(
             user_id=2,
             entry="Feeling a bit overwhelmed with work. The deadlines are approaching, and there's so much to do. Taking a deep breath and planning to tackle one task at a time. Despite the challenges, I find solace in the progress I've made so far. It's a reminder that every step forward is an achievement.",

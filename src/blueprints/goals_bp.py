@@ -20,13 +20,14 @@ def get_goals():
 def create_goal():
     user_id = get_jwt_identity()
     data = request.json
+    goal = data.get('goal')
     description = data.get('description')
-    due_date = data.get('due_date')
+    deadline = data.get('deadline')  # Use "deadline" consistently
 
     if not description:
         return jsonify({'error': 'Description cannot be empty'}), 400
 
-    new_goal = Goal(user_id=user_id, description=description, due_date=due_date)
+    new_goal = Goal(user_id=user_id, goal=goal, description=description, deadline=deadline)
     db.session.add(new_goal)
     db.session.commit()
 
@@ -47,17 +48,20 @@ def update_goal(id):
 
     data = request.json
     description = data.get('description')
-    due_date = data.get('due_date')
+    deadline = data.get('deadline')
+    status = data.get('status')  # Retrieve the "status" from the request data
 
     if not description:
         return jsonify({'error': 'Description cannot be empty'}), 400
 
     goal.description = description
-    goal.due_date = due_date
+    goal.deadline = deadline
+    goal.status = status  # Update the "status" of the goal
     db.session.commit()
 
     result = goal_schema.dump(goal)
     return jsonify(result)
+
 
 @goals_bp.route('/<int:id>', methods=['DELETE'])
 @jwt_required()

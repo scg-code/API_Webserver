@@ -20,18 +20,14 @@ def get_activity_logs():
 def create_activity_log():
     user_id = get_jwt_identity()
     data = request.json
-    activity_id = data.get('activity_id')
-    intensity = data.get('intensity')
 
-    if not activity_id:
-        return jsonify({'error': 'Activity ID cannot be empty'}), 400
-
-    new_activity_log = ActivityLog(user_id=user_id, activity_id=activity_id, intensity=intensity)
+    new_activity_log = ActivityLog(user_id=user_id, activity=data.get('activity'))
     db.session.add(new_activity_log)
     db.session.commit()
 
     result = activity_log_schema.dump(new_activity_log)
     return jsonify(result), 201
+
 
 @activity_logs_bp.route('/<int:log_id>', methods=['GET'])
 @jwt_required()
