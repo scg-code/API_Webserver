@@ -1,77 +1,89 @@
-# src/blueprints/activity_logs_bp.py
+# Import necessary modules
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from src.extensions import db
 from src.models.activity_log import ActivityLog, ActivityLogSchema
 
+# Create a new Blueprint for activity logs
 activity_logs_bp = Blueprint('activity_logs', __name__, url_prefix='/activity_logs')
+
+# Create a schema for activity logs
 activity_log_schema = ActivityLogSchema()
 
+# Define a route for getting all activity logs
 @activity_logs_bp.route('', methods=['GET'])
-@jwt_required()
+@jwt_required()  # Require a valid JWT token
 def get_activity_logs():
-    user_id = get_jwt_identity()
-    activity_logs = ActivityLog.query.filter_by(user_id=user_id).all()
-    result = activity_log_schema.dump(activity_logs, many=True)
-    return jsonify(result)
+    user_id = get_jwt_identity()  # Get the user ID from the JWT token
+    activity_logs = ActivityLog.query.filter_by(user_id=user_id).all()  # Query all activity logs for this user
+    result = activity_log_schema.dump(activity_logs, many=True)  # Serialize the activity logs
+    return jsonify(result)  # Return the serialized activity logs
 
+# Define a route for creating a new activity log
 @activity_logs_bp.route('', methods=['POST'])
-@jwt_required()
+@jwt_required()  # Require a valid JWT token
 def create_activity_log():
-    user_id = get_jwt_identity()
-    data = request.json
+    user_id = get_jwt_identity()  # Get the user ID from the JWT token
+    data = request.json  # Get the request data
 
+    # Create a new activity log
     new_activity_log = ActivityLog(user_id=user_id, activity=data.get('activity'))
-    db.session.add(new_activity_log)
-    db.session.commit()
+    db.session.add(new_activity_log)  # Add the new activity log to the session
+    db.session.commit()  # Commit the session to save the activity log
 
-    result = activity_log_schema.dump(new_activity_log)
-    return jsonify(result), 201
+    result = activity_log_schema.dump(new_activity_log)  # Serialize the new activity log
+    return jsonify(result), 201  # Return the serialized activity log with a 201 status code
 
-
+# Define a route for getting a specific activity log
 @activity_logs_bp.route('/<int:log_id>', methods=['GET'])
-@jwt_required()
+@jwt_required()  # Require a valid JWT token
 def get_activity_log(log_id):
-    user_id = get_jwt_identity()
-    activity_log = ActivityLog.query.filter_by(id=log_id, user_id=user_id).first()
+    user_id = get_jwt_identity()  # Get the user ID from the JWT token
+    activity_log = ActivityLog.query.filter_by(id=log_id, user_id=user_id).first()  # Query the activity log
 
+    # If the activity log does not exist, return an error
     if not activity_log:
         return jsonify({'error': 'Activity log not found'}), 404
 
-    result = activity_log_schema.dump(activity_log)
-    return jsonify(result)
+    result = activity_log_schema.dump(activity_log)  # Serialize the activity log
+    return jsonify(result)  # Return the serialized activity log
 
+# Define a route for updating a specific activity log
 @activity_logs_bp.route('/<int:log_id>', methods=['PUT'])
-@jwt_required()
+@jwt_required()  # Require a valid JWT token
 def update_activity_log(log_id):
-    user_id = get_jwt_identity()
-    activity_log = ActivityLog.query.filter_by(id=log_id, user_id=user_id).first()
+    user_id = get_jwt_identity()  # Get the user ID from the JWT token
+    activity_log = ActivityLog.query.filter_by(id=log_id, user_id=user_id).first()  # Query the activity log
 
+    # If the activity log does not exist, return an error
     if not activity_log:
         return jsonify({'error': 'Activity log not found'}), 404
 
-    data = request.json
+    data = request.json  # Get the request data
     activity_id = data.get('activity_id')
     intensity = data.get('intensity')
 
+    # Update the activity log
     activity_log.activity_id = activity_id or activity_log.activity_id
     activity_log.intensity = intensity or activity_log.intensity
 
-    db.session.commit()
+    db.session.commit()  # Commit the session to save the changes
 
-    result = activity_log_schema.dump(activity_log)
-    return jsonify(result)
+    result = activity_log_schema.dump(activity_log)  # Serialize the updated activity log
+    return jsonify(result)  # Return the serialized activity log
 
+# Define a route for deleting a specific activity log
 @activity_logs_bp.route('/<int:log_id>', methods=['DELETE'])
-@jwt_required()
+@jwt_required()  # Require a valid JWT token
 def delete_activity_log(log_id):
-    user_id = get_jwt_identity()
-    activity_log = ActivityLog.query.filter_by(id=log_id, user_id=user_id).first()
+    user_id = get_jwt_identity()  # Get the user ID from the JWT token
+    activity_log = ActivityLog.query.filter_by(id=log_id, user_id=user_id).first()  # Query the activity log
 
+    # If the activity log does not exist, return an error
     if not activity_log:
         return jsonify({'error': 'Activity log not found'}), 404
 
-    db.session.delete(activity_log)
-    db.session.commit()
+    db.session.delete(activity_log)  # Delete the activity log
+    db.session.commit()  # Commit the session to save the changes
 
-    return jsonify({'message': 'Activity log deleted successfully'}), 200
+    return jsonify({'message': 'Activity log deleted successfully'}), 200  # Return a success message
