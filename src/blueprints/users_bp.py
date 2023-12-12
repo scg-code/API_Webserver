@@ -15,6 +15,8 @@ from sqlalchemy import desc
 # Define the users blueprint
 users_bp = Blueprint("users", __name__, url_prefix="/users")
 
+
+
 # Define the register route
 @users_bp.route("/register", methods=["POST"])
 def register():
