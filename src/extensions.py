@@ -22,13 +22,27 @@ ma = Marshmallow(app)  # Initialize Marshmallow with the Flask app
 bcrypt = Bcrypt(app)  # Initialize Bcrypt with the Flask app
 jwt = JWTManager(app)  # Initialize JWTManager with the Flask app
 
-# Define error handlers for the Flask application
 @app.errorhandler(401)
 def unauthorized(err):
     # Return a JSON response with an error message for 401 Unauthorized errors
-    return {'error': 'You are not authorized to access this resource'}
+    return {'error': str(err)}, 401
 
 @app.errorhandler(ValidationError)
 def validation_error(err):
-    # Return a JSON response with an error message for validation errors
-    return {'error': err.messages}
+    # Return a JSON response with validation error messages for ValidationError exceptions
+    return {'error': err.messages}, 400
+
+@app.errorhandler(404)
+def not_found(err):
+    # Return a JSON response with an error message for 404 Not Found errors
+    return {'error': str(err)}, 404
+
+@app.errorhandler(405)
+def method_not_allowed(err):
+    # Return a JSON response with an error message for 405 Method Not Allowed errors
+    return {'error': str(err)}, 405
+
+@app.errorhandler(500)
+def internal_server_error(err):
+    # Return a JSON response with an error message for 500 Internal Server Error errors
+    return {'error': str(err)}, 500
