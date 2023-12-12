@@ -12,6 +12,8 @@ class ActivityLog(db.Model):
     activity = db.Column(db.String, nullable=False)  # Column for the activity, which cannot be null
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=True)  # Timestamp column with a default value of the current time and can be null
 
+    user = db.relationship('User', back_populates='activity_logs')
+
 # Define the ActivityLog schema
 class ActivityLogSchema(Schema):
     id = fields.Int(dump_only=True)  # Field for the ID, which should not be loaded from input data

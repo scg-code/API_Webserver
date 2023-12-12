@@ -4,6 +4,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from src.extensions import db
 from src.models.mood_entry import MoodEntry, MoodEntrySchema
 from datetime import datetime
+from werkzeug.exceptions import NotFound
 
 # Define the mood_entries blueprint
 mood_entries_bp = Blueprint('mood_entries', __name__)
@@ -72,16 +73,22 @@ def create_mood_entry():
 
 # Define the route for deleting a mood entry
 @mood_entries_bp.route('/mood_entries/<int:mood_entry_id>', methods=['DELETE'])
+@jwt_required()
 def delete_mood_entry(mood_entry_id):
-    # Query the database for the specified mood entry, or return a 404 error if it does not exist
-    mood_entry = MoodEntry.query.get_or_404(mood_entry_id)
+    try:
+        # Query the database for the specified mood entry, or return a 404 error if it does not exist
+        mood_entry = MoodEntry.query.get_or_404(mood_entry_id)
 
-    # Delete the mood entry from the database and commit the changes
-    db.session.delete(mood_entry)
-    db.session.commit()
+        # Delete the mood entry from the database and commit the changes
+        db.session.delete(mood_entry)
+        db.session.commit()
 
-    # Return a success message and a 200 OK status code
-    return jsonify({'message': 'Mood entry deleted successfully'})
+        # Return a success message and a 200 OK status code
+        return {"message": "Mood entry deleted successfully"}, 200
+    except NotFound:
+        # If a NotFound exception is raised, return a custom error message and a 404 Not Found status code
+        return {"error": "Mood entry not found"}, 404
+    
 
 # Define the route for updating a mood entry
 @mood_entries_bp.route('/mood_entries/<int:mood_entry_id>', methods=['PUT'])
@@ -104,8 +111,9 @@ def update_mood_entry(mood_entry_id):
         if mood_entry.user_id != user_id:
             return jsonify({'error': 'Unauthorized'}), 401
 
-        # Update the mood entry's mood and note with the provided data, or keep the current values if no data is provided
+        # Update the mood entry's mood, mood_intensity and note with the provided data, or keep the current values if no data is provided
         mood_entry.mood = data.get('mood', mood_entry.mood)
+        mood_entry.mood_intensity = data.get('mood_intensity', mood_entry.mood_intensity)
         mood_entry.note = data.get('note', mood_entry.note)
 
         # Set the timestamp to the current date and time
@@ -120,3 +128,27 @@ def update_mood_entry(mood_entry_id):
     except Exception as e:
         # If an error occurs, return the error message and a 400 Bad Request status code
         return jsonify({'error': str(e)}), 400
+    
+# Define the route for getting a depression warning
+@mood_entries_bp.route('/depression_warning', methods=['GET'])
+@jwt_required()  # Require a valid JWT token to access this route
+def get_depression_warning():
+    # Get the ID of the user making the request
+    user_id = get_jwt_identity()
+
+    # Query the database for the user's last 7 mood entries
+    mood_entries = MoodEntry.query.filter_by(user_id=user_id).order_by(MoodEntry.timestamp.desc()).limit(7).all()
+
+    # If the user has less than 7 mood entries, return a message indicating that not enough data is available
+    if len(mood_entries) < 7:
+        return jsonify({'message': 'Not enough data to determine depression warning.'}), 200
+
+    # Calculate the average mood intensity of the last 7 mood entries
+    average_mood_intensity = sum([mood_entry.mood_intensity for mood_entry in mood_entries]) / 7
+
+    # If the average mood intensity is less than or equal to 3, return a depression warning
+    if average_mood_intensity <= 3:
+        return jsonify({'warning': 'Depression warning: Your average mood intensity over the last week is very low.'}), 200
+
+    # If the average mood intensity is greater than 3, return a message indicating that no depression warning is necessary
+    return jsonify({'message': 'No depression warning necessary.'}), 200

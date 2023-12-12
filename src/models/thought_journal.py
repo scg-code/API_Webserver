@@ -12,6 +12,9 @@ class ThoughtJournal(db.Model):
     entry = db.Column(db.Text, nullable=False)  # Column for the journal entry
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)  # Timestamp column with a default value of the current time
 
+    # Defining a relationship with the User model
+    user = db.relationship('User', back_populates='thought_journals')
+
 # Define the ThoughtJournal schema
 class ThoughtJournalSchema(Schema):
     id = fields.Int(dump_only=True)  # Field for the ID, which should not be loaded from input data

@@ -43,26 +43,26 @@ def db_seed():
     db.session.commit()
     print("Users Seeded")
 
+
     # Dummy Mood Entries
     mood_entries = [
-        MoodEntry(
-            user_id=1,
-            mood="Happy",
-            note="Feeling great today!",
-            timestamp=datetime.utcnow(),
-        ),
-        MoodEntry(
-            user_id=2,
-            mood="Sad",
-            note="Had a tough day.",
-            timestamp=datetime.utcnow(),
-        ),
-        MoodEntry(
-            user_id=3,
-            mood="Excited",
-            note="Looking forward to the weekend!",
-            timestamp=datetime.utcnow(),
-        ),
+        # 7 mood entries for user_id=1
+        MoodEntry(user_id=1, mood="Happy", mood_intensity=8, note="Feeling great today!", timestamp=datetime.utcnow()),
+        MoodEntry(user_id=1, mood="Sad", mood_intensity=2, note="Not feeling well.", timestamp=datetime.utcnow()),
+        MoodEntry(user_id=1, mood="Sad", mood_intensity=3, note="Had a tough day.", timestamp=datetime.utcnow()),
+        MoodEntry(user_id=1, mood="Sad", mood_intensity=2, note="Feeling down.", timestamp=datetime.utcnow()),
+        MoodEntry(user_id=1, mood="Sad", mood_intensity=1, note="Very tough day.", timestamp=datetime.utcnow()),
+        MoodEntry(user_id=1, mood="Sad", mood_intensity=2, note="Not my day.", timestamp=datetime.utcnow()),
+        MoodEntry(user_id=1, mood="Sad", mood_intensity=3, note="Feeling very low.", timestamp=datetime.utcnow()),
+        
+        # 7 mood entries for user_id=2
+        MoodEntry(user_id=2, mood="Excited", mood_intensity=9, note="Looking forward to the weekend!", timestamp=datetime.utcnow()),
+        MoodEntry(user_id=2, mood="Happy", mood_intensity=7, note="Good day at work.", timestamp=datetime.utcnow()),
+        MoodEntry(user_id=2, mood="Content", mood_intensity=6, note="Relaxed day.", timestamp=datetime.utcnow()),
+        MoodEntry(user_id=2, mood="Happy", mood_intensity=8, note="Had a great workout.", timestamp=datetime.utcnow()),
+        MoodEntry(user_id=2, mood="Excited", mood_intensity=9, note="Going on a trip tomorrow!", timestamp=datetime.utcnow()),
+        MoodEntry(user_id=2, mood="Happy", mood_intensity=7, note="Caught up with an old friend.", timestamp=datetime.utcnow()),
+        MoodEntry(user_id=2, mood="Content", mood_intensity=6, note="Enjoyed a good book.", timestamp=datetime.utcnow()),
     ]
 
     db.session.add_all(mood_entries)

@@ -19,3 +19,5 @@ app.register_blueprint(thought_journals_bp)  # Register the thought journals blu
 app.register_blueprint(goals_bp)  # Register the goals blueprint
 app.register_blueprint(activity_logs_bp)  # Register the activity logs blueprint
 
+for rule in app.url_map.iter_rules():
+    print(rule)

@@ -14,8 +14,12 @@ class User(db.Model):
     registration_date = db.Column(db.Date, default=db.func.current_date())  # Registration date column with a default value of the current date
     is_admin = db.Column(db.Boolean, default=False)  # Admin status column with a default value of False
 
-    # Defining a relationship with the MoodEntry model
+
+    # Defining relationships with other models
     mood_entries = db.relationship('MoodEntry', back_populates='user', cascade="all, delete-orphan")
+    goals = db.relationship('Goal', back_populates='user', cascade="all, delete-orphan")
+    activity_logs = db.relationship('ActivityLog', back_populates='user', cascade="all, delete-orphan")
+    thought_journals = db.relationship('ThoughtJournal', back_populates='user', cascade="all, delete-orphan")
 
 # User registration schema
 class UserRegistrationSchema(Schema):
