@@ -1,4 +1,20 @@
-# SamuelGifford_T2A2 - API Web Server - *MoodNest*
+# SamuelGifford_T2A2 - API Web Server
+
+![MoodNest](/docs/Moodnest.png)
+
+### R0 - Introduction
+
+*MoodNest* is a comprehensive and user-centric mental health check-in platform designed to address the growing need for accessible tools for daily mental well-being management. With a focus on proactive mental health, *MoodNest* aims to empower individuals to reflect on their mental well-being, track their emotions, and develop strategies for self-care. By providing a stigma-free environment and fostering a culture of openness, *MoodNest* strives to contribute to a healthier and more resilient society that prioritizes mental well-being.
+
+---
+
+## Table of Contents
+- [R1 - Identification of the problem you are trying to solve by building this particular app](#r1---identification-of-the-problem-you-are-trying-to-solve-by-building-this-particular-app)
+- [R2 - Why is it a problem that needs solving?](#r2---why-is-it-a-problem-that-needs-solving)
+- [R3 - Why have you chosen this database system. What are the drawbacks compared to others?](#r3---why-have-you-chosen-this-database-system-what-are-the-drawbacks-compared-to-others)
+- [R4 - Identify and discuss the key functionalities and benefits of an ORM](#r4---identify-and-discuss-the-key-functionalities-and-benefits-of-an-orm)
+
+---
 
 ### R1 - Identification of the problem you are trying to solve by building this particular app.
 In the contemporary landscape, mental health has emerged as a critical facet of overall well-being, with an increasing global awareness of the huge impact of mental health challenges on individuals and societies. The problem at hand revolves around the substantial gap between the prevalence of mental health concerns and the accessibility of effective tools for daily mental well-being check-ins and management.  *MoodNest* endeavours to address this multifaceted challenge by providing a comprehensive and user-centric mental health check-in platform.
@@ -137,6 +153,275 @@ In conclusion, an ORM simplifies the interaction between application code and re
 ---
 
 ### R5 - Document all endpoints for your API
+
+
+#### User Endpoints
+
+1. Register
+    - Endpoint
+       - URL: /register
+       - Method: POST
+       - Auth: None Required
+       - Description: The /register endpoint allows users to sign up by providing registration information. No authentication is required, and successful registration results in the creation of a new user account. If the provided email is already in use, a conflict error is returned.
+       - Expected Responses: 
+         - Status Code: 201 (Created)
+         - Body: JSON containing the user's name, email and a success message.
+         - Status Code: 409 (Conflict)
+         - Body: JSON with an error message indicating that the provided email is already in use.
+
+
+![Register_endpoint](/docs/Register_User.png)
+![Register_endpoint](/docs/Email_in_use.png)
+---
+
+
+2. Login
+    - **Endpoint:**
+       - **URL:** `/login`
+       - **Method:** POST
+       - **Auth:** email, password
+    - **Description:** The `/login` endpoint enables users to authenticate by providing their email and password. A successful login returns a JWT token, allowing access to protected routes. If the credentials are invalid, an error message is returned.
+    - **Expected Responses:**
+       - **Success (200 OK):**
+          - Status Code: 200
+          - Body: JSON containing the access token and user information.
+       - **Unauthorized (401):**
+          - Status Code: 401
+          - Body: JSON with an error message indicating invalid email or password.
+
+![login_endpoint](/docs/succesful_login.png)
+![login_endpoint](/docs/failed_login.png)
+---
+
+3. Get ALL users
+    - **Endpoint:**
+       - **URL:** `/users`
+       - **Method:** GET
+       - **Auth:** JWT Token (Required), (ADMIN ONLY)
+    - **Description:** Retrieves information for all users. Authentication with a valid JWT token is required, and only administrators have access to this endpoint. Returns a JSON array containing user data, including email, ID, admin status, name, registration date, and the latest mood entry emotion (if available).
+    - **Expected Responses:**
+       - **Success (200 OK):**
+          - Status Code: 200
+          - Body: JSON array containing user data.
+       - **Forbidden (403):**
+          - Status Code: 403
+          - Body: JSON with an error message indicating that only administrators have access.
+
+![get_all_users_endpoint](/docs/admin_Get_all_users.png)
+![get_all_users_endpoint](/docs/admin_required_users.png)
+---
+
+4. Delete User
+   - **Endpoint:**
+     - **URL:** `/users/{user_id}`
+     - **Method:** DELETE
+     - **Auth:** JWT Token (Required), (ADMIN ONLY)
+   - **Description:** Deletes a user account. Authentication with a valid JWT token is required, and only administrators have access to this endpoint. Deletes the specified user from the database. Returns a success message if the deletion is successful.
+   - **Parameters:**
+     - `{user_id}` (int): ID of the user to be deleted.
+   - **Expected Responses:**
+     - **Success (200 OK):**
+       - Status Code: 200
+       - Body: JSON with a success message.
+   - **Not Found (404):**
+       - Status Code: 404
+       - Body: JSON with an error message indicating that the specified user was not found.
+   - **Forbidden (403):**
+       - Status Code: 403
+       - Body: JSON with an error message indicating that only administrators have access.
+
+
+![delete_users_endpoint](/docs/delete_success.png)
+![delete_users_endpoint](/docs/delete_user_not_found.png)
+![delete_users_endpoint](/docs/delete_admin_required.png)
+---
+
+5. Get User Stats
+   - **Endpoint:**
+     - **URL:** `/users/{user_id}/stats`
+     - **Method:** GET
+     - **Auth:** JWT Token (Required)
+   - **Description:** Retrieves statistics for a specific user. Authentication with a valid JWT token is required. Users can only view their own stats. Returns the number of mood entries, goals, activity logs, and thought journals associated with the user.
+   - **Parameters:**
+     - `{user_id}` (int): ID of the user to retrieve stats for.
+   - **Expected Responses:**
+     - **Success (200 OK):**
+       - Status Code: 200
+       - Body: JSON with user statistics.
+   - **Forbidden (403):**
+       - Status Code: 403
+       - Body: JSON with an error message indicating that the user is not authorized to view these stats.
+
+![user_stats_endpoint](/docs/user_status_success.png)
+![user_stats_endpoint](/docs/user_stats_unauth.png)
+---
+
+6. Change User Details
+   - **Endpoint:**
+     - **URL:** `/users/{user_id}/change`
+     - **Method:** PATCH
+     - **Auth:** JWT Token (Required)
+   - **Description:** Updates user details, including email and password. Users can only update their own details, while administrators can update any user's details. Returns a success message if the update is successful.
+   - **Parameters:**
+     - `{user_id}` (int): ID of the user to change details for.
+   - **Request Body:**
+     - JSON with the following optional fields:
+       - `email` (string): New email address.
+       - `password` (string): New password.
+   - **Expected Responses:**
+     - **Success (200 OK):**
+       - Status Code: 200
+       - Body: JSON with a success message.
+     - **Conflict (409):**
+       - Status Code: 409
+       - Body: JSON with an error message indicating that the new email address is already in use.
+     - **Forbidden (403):**
+       - Status Code: 403
+       - Body: JSON with an error message indicating that the user is not authorized to change these details.
+
+![change_user_details_endpoint](/docs/change_successful.png)
+![change_user_details_endpoint](/docs/change_email_in_use.png)
+![change_user_details_endpoint](/docs/change_admin_required.png)
+---
+
+#### Mood Entry Endpoints
+
+1. Create Mood Entry
+
+   - **Endpoint:**
+     - **URL:** `/mood_entries`
+     - **Method:** POST
+     - **Auth:** JWT Token (Required)
+   - **Description:** Creates a new mood entry for the authenticated user. Requires a valid JWT token for authentication. The request body should contain information about the mood entry. Returns the created mood entry in a JSON response with a 201 Created status code.
+   - **Request Body:**
+     - JSON with the following required fields:
+       - `mood` (string): The mood for the entry.
+       - `mood_intensity` (integer): The intensity of the mood.
+       - `note` (string): Additional details or comments about the mood.
+   - **Expected Responses:**
+     - **Success (201 Created):**
+       - Status Code: 201
+       - Body: JSON with the created mood entry.
+     - **Bad Request (400):**
+       - Status Code: 400
+       - Body: JSON with an error message indicating a validation error and the specific error messages.
+
+![create_mood_entry_endpoint](/docs/mood_create_success.png)
+![create_mood_entry_endpoint](/docs/mood_entry_bad.png)
+---
+
+2. Get All Mood Entries
+
+   - **Endpoint:**
+     - **URL:** `/mood_entries`
+     - **Method:** GET
+     - **Auth:** JWT Token (Required)
+   - **Description:** Retrieves all mood entries created by the authenticated user. Requires a valid JWT token for authentication. Returns a JSON array containing information about each mood entry.
+   - **Expected Responses:**
+     - **Success (200 OK):**
+       - Status Code: 200
+       - Body: JSON array with information about each mood entry.
+     - **Unauthorized (401):**
+       - Status Code: 401
+       - Body: JSON with a message indicating missing or invalid JWT token.
+
+![get_all_mood_entry](/docs/mood_entry_get_all.png)
+![get_all_mood_entry](/docs/mood_entry_not_auth.png)
+---
+
+3. Get Specific Mood Entry
+
+   - **Endpoint:**
+     - **URL:** `/mood_entries/{mood_entry_id}`
+     - **Method:** GET
+   - **Description:** Retrieves information about a specific mood entry. Returns a JSON object with details of the mood entry. If the specified mood entry does not exist, a 404 Not Found error is returned.
+   - **Parameters:**
+     - `{mood_entry_id}` (int): ID of the mood entry to retrieve.
+   - **Expected Responses:**
+     - **Success (200 OK):**
+       - Status Code: 200
+       - Body: JSON with information about the specified mood entry.
+     - **Forbidden (403):**
+       - Status Code: 403
+       - Body: JSON with an error message indicating You do not have permission to access this resource.
+
+![specific_mood_entry](/docs/specific_mood_entry.png)
+![specific_mood_entry](/docs/specific_mood_no_auth.png)
+---
+
+4. Update Mood Entry
+
+   - **Endpoint:**
+     - **URL:** `/mood_entries/{mood_entry_id}`
+     - **Method:** PUT
+     - **Auth:** JWT Token (Required)
+   - **Description:** Updates a specific mood entry. Only the user who created the mood entry can update it. Requires a valid JWT token for authentication. Returns the updated mood entry in a JSON response with a 200 OK status code.
+   - **Parameters:**
+     - `{mood_entry_id}` (int): ID of the mood entry to update.
+   - **Request Body:**
+     - JSON with the following optional fields:
+       - `mood` (string): New mood for the entry.
+       - `mood_intensity` (integer): New intensity of the mood.
+       - `note` (string): New details or comments about the mood.
+   - **Expected Responses:**
+     - **Success (200 OK):**
+       - Status Code: 200
+       - Body: JSON with the updated mood entry.
+     - **Bad Request (400):**
+       - Status Code: 400
+       - Body: JSON with an error message indicating the specific error.
+     - **Unauthorized (401):**
+       - Status Code: 401
+       - Body: JSON with an error message indicating You do not have permission to update this resource.
+
+![mood_entry_update](/docs/mood_entry_update_success.png)
+![mood_entry_update](/docs/mood_entry_update_400.png)
+![mood_entry_update](/docs/Mood_entry_update_unauth.png)
+---
+
+
+5. Delete Mood Entry
+
+   - **Endpoint:**
+     - **URL:** `/mood_entries/{mood_entry_id}`
+     - **Method:** DELETE
+     - **Auth:** JWT Token (Required)
+   - **Description:** Deletes a specific mood entry. Only the user who created the mood entry can delete it. Requires a valid JWT token for authentication. Returns a success message in a JSON response with a 200 OK status code.
+   - **Parameters:**
+     - `{mood_entry_id}` (int): ID of the mood entry to delete.
+   - **Expected Responses:**
+     - **Success (200 OK):**
+       - Status Code: 200
+       - Body: JSON with a success message.
+     - **Not Found (404):**
+       - Status Code: 404
+       - Body: JSON with an error message indicating that the specified mood entry was not found.
+     - **Unauthorized (401):**
+       - Status Code: 401
+       - Body: JSON with an error message indicating You do not have permission to delete this resource.
+
+![delete_mood_entry](/docs/delete_mood_entry_200.png)
+![delete_mood_entry](/docs/delete_mood_entry_404.png)
+![delete_mood_entry](/docs/delete_mood_entry_401.png)
+---
+
+6. Get Depression Warning
+
+   - **Endpoint:**
+     - **URL:** `/depression_warning`
+     - **Method:** GET
+     - **Auth:** JWT Token (Required)
+   - **Description:** Retrieves a depression warning based on the user's average mood intensity over the last week. Requires a valid JWT token for authentication. Returns a message indicating whether a depression warning is necessary.
+   - **Expected Responses:**
+     - **Success (200 OK):**
+       - Status Code: 200
+       - Body: JSON with a depression warning message, a message indicating that no warning is necessary or not enough data.
+
+![depression_warning](/docs/depression_warning.png)
+![depression_warning](/docs/depression_warning_not_applicable.png)
+![depression_warning](/docs/depression_warning_no%20data.png)
+---
+
 
 
 ### R6 - An ERD for your app
