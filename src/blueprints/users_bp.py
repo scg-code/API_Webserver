@@ -5,8 +5,9 @@ from src.models.mood_entry import MoodEntry
 from src.models.goal import Goal
 from src.models.activity_log import ActivityLog
 from src.models.thought_journal import ThoughtJournal
+from src.auth import authorize 
 from sqlalchemy.exc import IntegrityError
-from flask_jwt_extended import create_access_token, jwt_required
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from src.auth import authorize
 from werkzeug.exceptions import NotFound
 from sqlalchemy import desc
@@ -33,8 +34,8 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        # Return the new user's information and a 201 Created status code
-        return UserSchema().dump(user), 201
+        # Return the user's name, email, and a success message, along with a 201 Created status code
+        return {"name": user.name, "email": user.email, "message": "Registration successful"}, 201
     except IntegrityError:
         # If an IntegrityError is raised, return an error message and a 409 Conflict status code
         return {"error": "Email address is already in use"}, 409
@@ -65,7 +66,9 @@ def login():
 @users_bp.route("/")
 @jwt_required()
 def all_users():
-    authorize()  # Admin Only
+    response = authorize(admin_required=True)  # Admin Only
+    if response is not None:
+        return response
 
     # Query the database for all users
     stmt = db.select(User)
@@ -100,7 +103,9 @@ def all_users():
 @users_bp.route("/<int:user_id>", methods=["DELETE"])
 @jwt_required()
 def delete_user(user_id):
-    authorize()  # Ensure the user is authorized (Admin Only)
+    response = authorize(admin_required=True)  # Admin Only
+    if response is not None:
+        return response
 
     try:
         # Query the database for the user being deleted
@@ -121,10 +126,13 @@ def delete_user(user_id):
         return {"error": "Cannot delete user because there are related records"}, 409
     
 
-# Define the route for getting user statistics
 @users_bp.route("/<int:user_id>/stats", methods=["GET"])
 @jwt_required()
 def get_user_stats(user_id):
+    current_user_id = get_jwt_identity()
+    if current_user_id != user_id:
+        return {"error": "You are not authorized to view these stats"}, 403
+
     try:
         # Query the database for the specified user, or return a 404 error if they do not exist
         user = User.query.get_or_404(user_id)
@@ -145,3 +153,38 @@ def get_user_stats(user_id):
     except NotFound:
         # If a NotFound exception is raised, return a custom error message and a 404 Not Found status code
         return {"error": "User not found"}, 404
+    
+
+@users_bp.route("/<int:user_id>/change", methods=["PATCH"])
+@jwt_required()
+def change_user(user_id):
+    current_user_id = get_jwt_identity()
+    admin_required = current_user_id != user_id
+    response = authorize(user_id=user_id, admin_required=admin_required)
+    if response is not None:
+        return response
+
+    # Rest of your code...
+
+    # Query the database for the specified user, or return a 404 error if they do not exist
+    user = User.query.get_or_404(user_id)
+
+    # Get the request data
+    data = request.json
+
+    # If the user is changing their email, ensure the new email is not already in use
+    if "email" in data and data["email"] != user.email:
+        if User.query.filter_by(email=data["email"]).first():
+            return jsonify({"error": "Email address is already in use"}), 409
+        
+    # Update the user's email and/or password with the provided data, or keep the current values if no data is provided
+    user.email = data.get("email", user.email)
+    user.password = bcrypt.generate_password_hash(data.get("password", user.password)).decode("utf8")
+
+    # Commit the changes to the database
+    db.session.commit()
+
+    # Return a success message and a 200 OK status code
+    return jsonify({"message": "User updated successfully"}), 200
+
+

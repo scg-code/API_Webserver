@@ -129,6 +129,7 @@ def update_mood_entry(mood_entry_id):
         # If an error occurs, return the error message and a 400 Bad Request status code
         return jsonify({'error': str(e)}), 400
     
+
 # Define the route for getting a depression warning
 @mood_entries_bp.route('/depression_warning', methods=['GET'])
 @jwt_required()  # Require a valid JWT token to access this route
@@ -137,14 +138,18 @@ def get_depression_warning():
     user_id = get_jwt_identity()
 
     # Query the database for the user's last 7 mood entries
-    mood_entries = MoodEntry.query.filter_by(user_id=user_id).order_by(MoodEntry.timestamp.desc()).limit(7).all()
+    mood_entries = MoodEntry.query.filter_by(user_id=user_id)\
+                                  .order_by(MoodEntry.timestamp.desc())\
+                                  .limit(7)\
+                                  .all()
 
     # If the user has less than 7 mood entries, return a message indicating that not enough data is available
     if len(mood_entries) < 7:
         return jsonify({'message': 'Not enough data to determine depression warning.'}), 200
 
     # Calculate the average mood intensity of the last 7 mood entries
-    average_mood_intensity = sum([mood_entry.mood_intensity for mood_entry in mood_entries]) / 7
+    total_mood_intensity = sum([mood_entry.mood_intensity for mood_entry in mood_entries])
+    average_mood_intensity = total_mood_intensity / 7
 
     # If the average mood intensity is less than or equal to 3, return a depression warning
     if average_mood_intensity <= 3:
