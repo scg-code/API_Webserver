@@ -20,6 +20,10 @@ def get_thought_journals():
     # Query the database for all thought journals for the user
     thought_journals = ThoughtJournal.query.filter_by(user_id=user_id).all()
 
+    # If the user has no thought journals, return a custom message
+    if not thought_journals:
+        return jsonify({"message": "No thought journals found for this user"}), 404
+
     # Serialize the thought journals and return them in a JSON response
     result = thought_journal_schema.dump(thought_journals, many=True)
     return jsonify(result)

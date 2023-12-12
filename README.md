@@ -422,6 +422,115 @@ In conclusion, an ORM simplifies the interaction between application code and re
 ![depression_warning](/docs/depression_warning_no%20data.png)
 ---
 
+### Thought Journal Endpoints
+
+1. Create Thought Journal Entry
+
+   - **Endpoint:**
+     - **URL:** `/thought_journals`
+     - **Method:** POST
+     - **Auth:** JWT Token (Required)
+   - **Description:** Creates a new thought journal entry for the authenticated user. Requires a valid JWT token for authentication. The request body should contain the entry text. Returns the created thought journal entry in a JSON response with a 201 Created status code.
+   - **Request Body:**
+     - JSON with the following required fields:
+       - `entry` (string): The text of the thought journal entry.
+   - **Expected Responses:**
+     - **Success (201 Created):**
+       - Status Code: 201
+       - Body: JSON with the created thought journal entry.
+     - **Bad Request (400):**
+       - Status Code: 400
+       - Body: JSON with an error message indicating that the entry cannot be empty.
+
+![thought_journal_create](/docs/thought_journal_201.png)
+![thought_journal_create](/docs/thought_journal_empty.png)
+---
+
+2. Get All Thought Journals
+
+   - **Endpoint:**
+     - **URL:** `/thought_journals`
+     - **Method:** GET
+     - **Auth:** JWT Token (Required)
+   - **Description:** Retrieves all thought journal entries created by the authenticated user. Requires a valid JWT token for authentication. Returns a JSON array containing information about each thought journal entry.
+   - **Expected Responses:**
+     - **Success (200 OK):**
+       - Status Code: 200
+       - Body: JSON array with information about each thought journal entry.
+     - **Not Found (404):**
+       - Status Code: 404
+       - Body: JSON with a message indicating that no thought journals were found for this user.
+
+![thought_journal_get](/docs/thought_journal_get.png)
+![thought_journal_get](/docs/thought_journal_404.png)
+---
+
+3. Update Thought Journal
+
+   - **Endpoint:**
+     - **URL:** `/thought_journals/{id}`
+     - **Method:** PUT
+     - **Auth:** JWT Token (Required)
+   - **Description:** Updates a specific thought journal entry. Only the user who created the thought journal can update it. Requires a valid JWT token for authentication. Returns the updated thought journal in a JSON response with a 200 OK status code.
+   - **Parameters:**
+     - `{id}` (int): ID of the thought journal entry to update.
+   - **Request Body:**
+     - JSON with the following required fields:
+       - `entry` (string): New content for the thought journal entry.
+   - **Expected Responses:**
+     - **Success (200 OK):**
+       - Status Code: 200
+       - Body: JSON with the updated thought journal entry.
+     - **Bad Request (400):**
+       - Status Code: 400
+       - Body: JSON with an error message indicating the specific error.
+     - **Forbidden (403):**
+       - Status Code: 403
+       - Body: JSON with an error message indicating You do not have permission to update this resource.
+     - **Not Found (404):**
+       - Status Code: 404
+       - Body: JSON with an error message indicating that the specified thought journal entry was not found.
+
+![thought_journal_update](/docs/thought_journal_update200.png)
+![thought_journal_update](/docs/thought_journal_update_400.png)
+![thought_journal_update](/docs/thought_journal_update403.png)
+![thought_journal_update](/docs/thought_journal_update404.png)
+---
+
+4. Delete Thought Journal
+
+   - **Endpoint:**
+     - **URL:** `/thought_journals/{id}`
+     - **Method:** DELETE
+     - **Auth:** JWT Token (Required)
+   - **Description:** Deletes a specific thought journal entry. Only the user who created the thought journal can delete it. Requires a valid JWT token for authentication. Returns a success message in a JSON response with a 200 OK status code.
+   - **Parameters:**
+     - `{id}` (int): ID of the thought journal entry to delete.
+   - **Expected Responses:**
+     - **Success (200 OK):**
+       - Status Code: 200
+       - Body: JSON with a success message.
+     - **Forbidden (403):**
+       - Status Code: 403
+       - Body: JSON with an error message indicating You do not have permission to delete this resource.
+     - **Not Found (404):**
+       - Status Code: 404
+       - Body: JSON with an error message indicating that the specified thought journal entry was not found.
+
+![thought_journal_delete](/docs/thought_journal_delete200.png)
+![thought_journal_delete](/docs/thought_journal_delete403.png)
+![thought_journal_delete](/docs/thought_journal_delete404.png)
+---
+
+
+
+
+
+
+
+
+
+
 
 
 ### R6 - An ERD for your app
