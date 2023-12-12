@@ -4,16 +4,21 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from src.extensions import db
 from src.models.mood_entry import MoodEntry, MoodEntrySchema
 from datetime import datetime
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, HTTPException
+from marshmallow.exceptions import ValidationError
 
 # Define the mood_entries blueprint
 mood_entries_bp = Blueprint('mood_entries', __name__)
 
 # Define the route for getting all mood entries
 @mood_entries_bp.route('/mood_entries', methods=['GET'])
+@jwt_required() 
 def get_mood_entries():
-    # Query the database for all mood entries
-    mood_entries = MoodEntry.query.all()
+    # Get the ID of the logged-in user
+    user_id = get_jwt_identity()
+
+    # Query the database for all mood entries created by the logged-in user
+    mood_entries = MoodEntry.query.filter_by(user_id=user_id).all()
 
     # Create an instance of MoodEntrySchema for serializing multiple mood entries
     mood_entries_schema = MoodEntrySchema(many=True)
@@ -22,11 +27,27 @@ def get_mood_entries():
     result = mood_entries_schema.dump(mood_entries)
     return jsonify(result)
 
+@mood_entries_bp.errorhandler(HTTPException)
+def handle_auth_error(e):
+    if 'Missing Authorization Header' in str(e):
+        response = jsonify({"message": "Missing or invalid JWT token"})
+        response.status_code = 401  # Unauthorized
+        return response
+    return e
+
 # Define the route for getting a specific mood entry
 @mood_entries_bp.route('/mood_entries/<int:mood_entry_id>', methods=['GET'])
+@jwt_required()  
 def get_mood_entry(mood_entry_id):
+    # Get the ID of the logged-in user
+    user_id = get_jwt_identity()
+
     # Query the database for the specified mood entry, or return a 404 error if it does not exist
     mood_entry = MoodEntry.query.get_or_404(mood_entry_id)
+
+    # Check if the logged-in user is the creator of the mood entry
+    if mood_entry.user_id != user_id:
+        return jsonify({"message": "You do not have permission to access this resource"}), 403
 
     # Create an instance of MoodEntrySchema for serializing a single mood entry
     mood_entry_schema = MoodEntrySchema()
@@ -79,6 +100,13 @@ def delete_mood_entry(mood_entry_id):
         # Query the database for the specified mood entry, or return a 404 error if it does not exist
         mood_entry = MoodEntry.query.get_or_404(mood_entry_id)
 
+        # Get the ID of the user making the request
+        user_id = get_jwt_identity()
+
+        # If the user making the request is not the one who created the mood entry, return an error message and a 401 Unauthorized status code
+        if mood_entry.user_id != user_id:
+            return jsonify({'error': 'You do not have permission to delete this resource'}), 401
+
         # Delete the mood entry from the database and commit the changes
         db.session.delete(mood_entry)
         db.session.commit()
@@ -100,6 +128,11 @@ def update_mood_entry(mood_entry_id):
     # Get the request data
     data = request.json
 
+    # Validate mood_intensity
+    mood_intensity = data.get('mood_intensity', mood_entry.mood_intensity)
+    if not 1 <= mood_intensity <= 10:
+        return jsonify({'error': 'mood_intensity must be an integer between 1 and 10'}), 400
+
     # Create an instance of MoodEntrySchema for deserializing the request data
     mood_entry_schema = MoodEntrySchema()
 
@@ -109,11 +142,11 @@ def update_mood_entry(mood_entry_id):
 
         # If the user making the request is not the one who created the mood entry, return an error message and a 401 Unauthorized status code
         if mood_entry.user_id != user_id:
-            return jsonify({'error': 'Unauthorized'}), 401
+            return jsonify({'error': 'You do not have permission to update this resource'}), 401
 
         # Update the mood entry's mood, mood_intensity and note with the provided data, or keep the current values if no data is provided
         mood_entry.mood = data.get('mood', mood_entry.mood)
-        mood_entry.mood_intensity = data.get('mood_intensity', mood_entry.mood_intensity)
+        mood_entry.mood_intensity = mood_intensity
         mood_entry.note = data.get('note', mood_entry.note)
 
         # Set the timestamp to the current date and time

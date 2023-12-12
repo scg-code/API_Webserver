@@ -1,5 +1,5 @@
 # Import necessary modules and classes
-from marshmallow import fields, Schema  # Classes for defining Marshmallow fields and schemas
+from marshmallow import fields, Schema, validate  # Classes for defining Marshmallow fields and schemas
 from datetime import datetime  # Module for working with dates and times
 from src.extensions import db  # SQLAlchemy database instance
 
@@ -17,16 +17,17 @@ class MoodEntry(db.Model):
     user = db.relationship('User', back_populates='mood_entries')  # Relationship to the User model
 
 # Define the MoodEntry schema
+
 class MoodEntrySchema(Schema):
-    id = fields.Int(dump_only=True)  # Field for the ID, which should not be loaded from input data
-    user_id = fields.Int(required=True)  # Field for the user ID, which is required
-    mood = fields.Str(required=True)  # Field for the mood, which is required
-    mood_intensity = fields.Int(required=True)  # New field for the mood intensity, which is required
-    note = fields.Str()  # Field for the note
-    timestamp = fields.Method("get_timestamp", dump_only=True)  # Field for the timestamp, which should not be loaded from input data and should be formatted as a string
+    id = fields.Int(dump_only=True)
+    user_id = fields.Int(required=True)
+    mood = fields.Str(required=True, validate=validate.Length(min=1))  # Add validation rule
+    mood_intensity = fields.Int(required=True, validate=validate.Range(min=1, max=10))  # Add validation rule
+    note = fields.Str()
+    timestamp = fields.Method("get_timestamp", dump_only=True)
 
     class Meta:
-        fields = ("id", "user_id", "mood", "mood_intensity", "note", "timestamp")  # Fields to include in the serialized output
+        fields = ("id", "user_id", "mood", "mood_intensity", "note", "timestamp")
 
     def get_timestamp(self, obj):
         return obj.timestamp.strftime("%Y-%m-%d %H:%M")
