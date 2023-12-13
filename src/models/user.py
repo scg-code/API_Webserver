@@ -2,6 +2,7 @@
 from src.extensions import db
 from marshmallow import fields, Schema, validate
 
+
 # Defining the User model for SQLAlchemy
 class User(db.Model):
     __tablename__ = 'users'  # Setting the table name in the database
@@ -14,12 +15,12 @@ class User(db.Model):
     registration_date = db.Column(db.Date, default=db.func.current_date())  # Registration date column with a default value of the current date
     is_admin = db.Column(db.Boolean, default=False)  # Admin status column with a default value of False
 
-
     # Defining relationships with other models
     mood_entries = db.relationship('MoodEntry', back_populates='user', cascade="all, delete-orphan")
     goals = db.relationship('Goal', back_populates='user', cascade="all, delete-orphan")
     activity_logs = db.relationship('ActivityLog', back_populates='user', cascade="all, delete-orphan")
     thought_journals = db.relationship('ThoughtJournal', back_populates='user', cascade="all, delete-orphan")
+
 
 # User registration schema
 class UserRegistrationSchema(Schema):
@@ -28,7 +29,9 @@ class UserRegistrationSchema(Schema):
     registration_date = fields.Date(dump_only=True)
 
     class Meta:
+        model = User  # Specify the model to be used for serialization
         fields = ("id", "name", "email", "password", "registration_date", "is_admin")
+
 
 # User serialization schema
 class UserSchema(Schema):
@@ -36,4 +39,5 @@ class UserSchema(Schema):
     registration_date = fields.Date(dump_only=True)
 
     class Meta:
+        model = User  # Specify the model to be used for serialization
         fields = ("id", "name", "email", "registration_date", "is_admin")
