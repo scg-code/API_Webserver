@@ -874,6 +874,19 @@ In conclusion, an ORM simplifies the interaction between application code and re
 ![activity_log_delete](/docs/activity_log_delete404.png)
 ---
 
+### Error Handling
+
+MoodNest has implemented a comprehensive error handling system in its application. For various HTTP status codes like 401 (Unauthorized), 404 (Not Found), 405 (Method Not Allowed), and 500 (Internal Server Error), it returns JSON responses with appropriate error messages. Additionally, it handles ValidationError exceptions by returning relevant error messages in a JSON format with a 400 status code. This approach ensures that users receive clear and specific feedback on any issues encountered, enhancing the overall reliability and user experience of the application. Below are a few screenshot examples from my application.
+
+![errors](/docs/error1.png)
+![errors](/docs/error2.png)
+![errors](/docs/error3.png)
+![errors](/docs/error4.png)
+![errors](/docs/error5.png)
+
+---
+
+
 ### R6 - An ERD for your app
 
 ![moodnest_erd](/docs/MoodNest_ERD.png)
@@ -1107,6 +1120,8 @@ Please see images below.
 ![discord3](/docs/discord3.png)
 
 ![discord4](/docs/discord4.png)
+
+![discord5](/docs/discord5.png)
 
 ---
 
