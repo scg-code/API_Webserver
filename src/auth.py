@@ -1,4 +1,3 @@
-# Import necessary modules and functions
 from flask import jsonify  # Function to create a JSON response
 from flask_jwt_extended import get_jwt_identity  # Function to get the identity of the current JWT
 from src.models.user import User  # User model

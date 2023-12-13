@@ -8,18 +8,21 @@ from src.models.goal import Goal
 from src.models.activity_log import ActivityLog
 from datetime import datetime
 
+# Create a new Blueprint for database-related commands
 db_commands = Blueprint('db', __name__)
 
+# Define a new command for the Flask CLI
 @db_commands.cli.command("create")
 def db_create():
-    db.drop_all()
-    db.create_all()
-    print("Created tables")
+    db.drop_all()  # Drop all tables in the database
+    db.create_all()  # Create all tables in the database
+    print("Created tables")  # Print a success message
 
+# Define another command for the Flask CLI
 @db_commands.cli.command("seed")
-@with_appcontext
+@with_appcontext  # Ensure the command runs in the application context
 def db_seed():
-    # Users
+    # Dummy Users
     users = [
         User(
             name="Sam Gifford",

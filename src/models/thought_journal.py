@@ -1,4 +1,3 @@
-# Import necessary modules and classes
 from marshmallow import fields, Schema  # Classes for defining Marshmallow fields and schemas
 from src.extensions import db  # SQLAlchemy database instance
 from datetime import datetime  # Module for working with dates and times

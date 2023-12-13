@@ -128,11 +128,14 @@ def delete_user(user_id):
         return {"error": "Cannot delete user because there are related records"}, 409
     
 
+# Define a route for getting user stats, with the user ID as a URL parameter
 @users_bp.route("/<int:user_id>/stats", methods=["GET"])
-@jwt_required()
+@jwt_required()  # Require a valid JWT token to access this route
 def get_user_stats(user_id):
-    current_user_id = get_jwt_identity()
+    current_user_id = get_jwt_identity()  # Get the ID of the current user from the JWT token
+    # Check if the current user's ID matches the user ID in the URL
     if current_user_id != user_id:
+        # If not, return an error message and a 403 status code
         return {"error": "You are not authorized to view these stats"}, 403
 
     try:
@@ -157,13 +160,14 @@ def get_user_stats(user_id):
         return {"error": "User not found"}, 404
     
 
+# Define a route for changing user details, with the user ID as a URL parameter
 @users_bp.route("/<int:user_id>/change", methods=["PATCH"])
-@jwt_required()
+@jwt_required()  # Require a valid JWT token to access this route
 def change_user(user_id):
-    current_user_id = get_jwt_identity()
-    admin_required = current_user_id != user_id
-    response = authorize(user_id=user_id, admin_required=admin_required)
-    if response is not None:
+    current_user_id = get_jwt_identity()  # Get the ID of the current user from the JWT token
+    admin_required = current_user_id != user_id  # Check if the current user is not the user to be changed, in which case admin rights are required
+    response = authorize(user_id=user_id, admin_required=admin_required)  # Authorize the user or admin
+    if response is not None:  # If the authorization failed, return the error response
         return response
 
     # Rest of your code...
@@ -176,12 +180,12 @@ def change_user(user_id):
 
     # If the user is changing their email, ensure the new email is not already in use
     if "email" in data and data["email"] != user.email:
-        if User.query.filter_by(email=data["email"]).first():
+        if User.query.filter_by(email=data["email"]).first():  # If the new email is already in use, return an error
             return jsonify({"error": "Email address is already in use"}), 409
         
     # Update the user's email and/or password with the provided data, or keep the current values if no data is provided
     user.email = data.get("email", user.email)
-    user.password = bcrypt.generate_password_hash(data.get("password", user.password)).decode("utf8")
+    user.password = bcrypt.generate_password_hash(data.get("password", user.password)).decode("utf8")  # Hash the new password before storing it
 
     # Commit the changes to the database
     db.session.commit()

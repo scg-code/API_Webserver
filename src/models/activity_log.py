@@ -1,4 +1,3 @@
-# Import necessary modules and classes
 from datetime import datetime  # Module for working with dates and times
 from marshmallow import fields, Schema  # Classes for defining Marshmallow fields and schemas
 from src.extensions import db  # SQLAlchemy database instance
@@ -12,6 +11,7 @@ class ActivityLog(db.Model):
     activity = db.Column(db.String, nullable=False)  # Column for the activity, which cannot be null
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=True)  # Timestamp column with a default value of the current time and can be null
 
+    # Define a relationship to the User model, which is back populated with 'activity_logs'
     user = db.relationship('User', back_populates='activity_logs')
 
 # Define the ActivityLog schema

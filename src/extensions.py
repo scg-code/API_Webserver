@@ -1,4 +1,3 @@
-# Import necessary modules and functions
 from flask_sqlalchemy import SQLAlchemy  # Extension for Flask that adds support for SQLAlchemy
 from flask_marshmallow import Marshmallow  # Extension for Flask that adds support for Marshmallow
 from flask_bcrypt import Bcrypt  # Extension for Flask that adds support for Bcrypt password hashing

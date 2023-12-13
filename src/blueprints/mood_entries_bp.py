@@ -1,4 +1,3 @@
-# Import necessary modules and classes
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from src.extensions import db
@@ -56,8 +55,9 @@ def get_mood_entry(mood_entry_id):
     result = mood_entry_schema.dump(mood_entry)
     return jsonify(result)
 
+# Define a route for creating a new mood entry
 @mood_entries_bp.route('/mood_entries', methods=['POST'])
-@jwt_required()
+@jwt_required()  # Require a valid JWT token to access this route
 def create_mood_entry():
     # Get the request data
     data = request.json
