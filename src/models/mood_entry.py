@@ -10,7 +10,7 @@ class MoodEntry(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # Primary key column
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Foreign key column referencing the users table
     mood = db.Column(db.String(50), nullable=False)  # Column for the mood, which cannot be null
-    mood_intensity = db.Column(db.Integer, nullable=False)  # New column for the mood intensity, which cannot be null
+    mood_intensity = db.Column(db.Integer, nullable=False)  # Column for the mood intensity, which cannot be null
     note = db.Column(db.Text)  # Column for the note, which can be null
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)  # Timestamp column with a default value of the current time and cannot be null
 

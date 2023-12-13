@@ -110,9 +110,9 @@ def delete_goal(id):
     if not goal:
         return jsonify({'error': 'Goal not found'}), 404
 
-    # If the user making the request is not the one who created the goal, return an error message and a 403 Forbidden status code
+    # If the user making the request is not the one who created the goal, return an error message and a 401 Unauthorized status code
     if goal.user_id != user_id:
-        return jsonify({'error': 'Unauthorized'}), 403
+        return jsonify({'error': 'You do not have permission to delete this goal'}), 401
 
     # Delete the goal from the database and commit the changes
     db.session.delete(goal)

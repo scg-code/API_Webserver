@@ -16,6 +16,11 @@ activity_log_schema = ActivityLogSchema()
 def get_activity_logs():
     user_id = get_jwt_identity()  # Get the user ID from the JWT token
     activity_logs = ActivityLog.query.filter_by(user_id=user_id).all()  # Query all activity logs for this user
+
+    # If the user has no activity logs, return a custom message
+    if not activity_logs:
+        return jsonify({"message": "No activity logs found for this user"}), 404
+
     result = activity_log_schema.dump(activity_logs, many=True)  # Serialize the activity logs
     return jsonify(result)  # Return the serialized activity logs
 
@@ -26,8 +31,15 @@ def create_activity_log():
     user_id = get_jwt_identity()  # Get the user ID from the JWT token
     data = request.json  # Get the request data
 
+    # Get the activity from the request data
+    activity = data.get('activity')
+
+    # If the activity is blank, return an error message and a 400 Bad Request status code
+    if not activity:
+        return jsonify({'error': 'Activity cannot be blank'}), 400
+
     # Create a new activity log
-    new_activity_log = ActivityLog(user_id=user_id, activity=data.get('activity'))
+    new_activity_log = ActivityLog(user_id=user_id, activity=activity)
     db.session.add(new_activity_log)  # Add the new activity log to the session
     db.session.commit()  # Commit the session to save the activity log
 
@@ -60,12 +72,10 @@ def update_activity_log(log_id):
         return jsonify({'error': 'Activity log not found'}), 404
 
     data = request.json  # Get the request data
-    activity_id = data.get('activity_id')
-    intensity = data.get('intensity')
+    activity = data.get('activity')
 
     # Update the activity log
-    activity_log.activity_id = activity_id or activity_log.activity_id
-    activity_log.intensity = intensity or activity_log.intensity
+    activity_log.activity = activity or activity_log.activity
 
     db.session.commit()  # Commit the session to save the changes
 
