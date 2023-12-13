@@ -2,7 +2,7 @@
 
 ![MoodNest](/docs/Moodnest.png)
 
-### R0 - Introduction
+### Introduction
 
 *MoodNest* is a comprehensive and user-centric mental health check-in platform designed to address the growing need for accessible tools for daily mental well-being management. With a focus on proactive mental health, *MoodNest* aims to empower individuals to reflect on their mental well-being, track their emotions, and develop strategies for self-care. By providing a stigma-free environment and fostering a culture of openness, *MoodNest* strives to contribute to a healthier and more resilient society that prioritizes mental well-being.
 
@@ -1051,3 +1051,44 @@ I also maintained a consistent practice of making regular commits to GitHub. Thi
 
 Please see images below.
 
+![6/12](/docs/6:12.png)
+
+![6/12](/docs/6:12.2.png)
+
+![6/12](/docs/6:12.3.png)
+
+![6/12](/docs/6:12.4.png)
+
+![6/12.5](/docs/6:12.5.png)
+
+![7/12](/docs/7:12.png)
+
+![7/12.1](/docs/7:12.1.png)
+
+![8/12](/docs/8:12.png)
+
+![8/12](/docs/8:12.1.png)
+
+![11/12](/docs/11:12.png)
+
+![12/12](/docs/12:12.png)
+
+![13/12](/docs/13:12.png)
+
+![13/12](/docs/13:12.1.png)
+
+![13/12](/docs/13:12.2.png)
+
+![14/12](/docs/14:12.png)
+
+![14/12](/docs/14:12.1.png)
+
+---
+
+![discord1](/docs/discord1.png)
+
+![discord2](/docs/discord2.png)
+
+![discord3](/docs/discord3.png)
+
+![discord4](/docs/discord4.png)
