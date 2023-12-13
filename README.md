@@ -2,9 +2,14 @@
 
 ![MoodNest](/docs/Moodnest.png)
 
+
+
+## [Github Repository - SamuelGifford_T2A2](https://github.com/scg-code/API_Webserver)
+
+
 ### Introduction
 
-*MoodNest* is a comprehensive and user-centric mental health check-in platform designed to address the growing need for accessible tools for daily mental well-being management. With a focus on proactive mental health, *MoodNest* aims to empower individuals to reflect on their mental well-being, track their emotions, and develop strategies for self-care. By providing a stigma-free environment and fostering a culture of openness, *MoodNest* strives to contribute to a healthier and more resilient society that prioritizes mental well-being.
+*MoodNest* is a visionary concept in the realm of mental health, conceived as an innovative web server API aimed at revolutionising daily mental well-being management. At its core, MoodNest is envisioned to be a vital tool for individuals seeking to proactively engage with their mental health. The idea is to create a platform that allows users to self-reflect, monitor their emotional states, and cultivate effective self-care practices. This initiative is not yet a fully developed application but stands as a promising framework that promises to offer a stigma-free and supportive environment. By promoting transparency and openness in discussions about mental health, *MoodNest* aspires to play a pivotal role in nurturing a society that values and actively cares for mental well-being.
 
 ---
 
@@ -116,16 +121,26 @@ http://127.0.0.1:5555 or localhost:5555
 ---
 
 
-### R1 - Identification of the problem you are trying to solve by building this particular app.
-In the contemporary landscape, mental health has emerged as a critical facet of overall well-being, with an increasing global awareness of the huge impact of mental health challenges on individuals and societies. The problem at hand revolves around the substantial gap between the prevalence of mental health concerns and the accessibility of effective tools for daily mental well-being check-ins and management.  *MoodNest* endeavours to address this multifaceted challenge by providing a comprehensive and user-centric mental health check-in platform.
+### R1 - Identification of the Problem You Are Trying to Solve by Building This Particular App
 
-Global statistics underscore the gravity of mental health challenges. According to the World Health Organization (WHO), over 450 million people worldwide suffer from mental health disorders! Making mental health conditions a leading cause of ill-health and disability globally. Despite the staggering prevalence, a massive proportion of individuals do not have easy access to personalised and supportive platforms for regular mental health check-ins. 
+In today's world, mental health has become a crucial aspect of overall well-being, increasingly recognized for its significant impact on individuals and societies. The primary issue MoodNest intends to tackle is the substantial gap between the widespread occurrence of mental health concerns and the availability of effective tools for daily mental well-being check-ins and management.
 
-A critical aspect of the problem lies in the underutilization of available mental health services. According to the Australian Institute of Health and Welfare (AIHW), nearly 65% of Australians with mental health disorders did not access mental health services in 2020. Stigma, lack of awareness, and societal attitudes continue to hinder individuals from seeking necessary support. *MoodNest* endeavours to challenge this underutilization by providing an Australian-centric, stigma-free environment that encourages individuals to engage in daily reflections on their mental well-being.
+Global statistics highlight the severity of mental health challenges. The World Health Organization (WHO) reports that over 450 million people globally suffer from mental health disorders, making these conditions a leading cause of ill-health and disability worldwide \[[WHO](https://www.who.int/news/item/28-09-2001-the-world-health-report-2001-mental-disorders-affect-one-in-four-people)\]. Despite this high prevalence, there is a notable lack of accessible, personalized platforms for regular mental health monitoring.
 
-The workplace is a significant arena for mental health challenges in Australia as well. Work-related stress has been identified as a prominent issue affecting productivity. A study by *BeyondBlue*, an Australian mental health organization, reveals that work-related stress costs the Australian economy over $10 billion per year. The demanding nature of work environments, exacerbated by factors such as remote work and job uncertainty, underscores the need for targeted strategies. *MoodNest* acknowledges the impact of workplace stress on mental health and productivity, positioning itself as a valuable reDocumentation for Australians seeking daily strategies to manage stress and achieve a healthier work-life balance.
+The underutilization of mental health services is a key part of the problem. For instance, the Australian Institute of Health and Welfare (AIHW) found that about 65% of Australians with mental health disorders did not access mental health services in 2020 \[[AIHW](https://www.aihw.gov.au/mental-health)\]. Factors such as stigma, lack of awareness, and societal attitudes are significant barriers. MoodNest aims to mitigate this issue by offering a stigma-free, Australian-focused platform that encourages daily mental well-being reflection.
 
-Young Australians are particularly vulnerable to mental health challenges, and the statistics emphasize the urgency of targeted interventions. According to the ABS, mental health conditions are prevalent among young Australians, with around 26% of people aged 16 to 24 experiencing mental health disorders. 
+In the Australian workplace, mental health is particularly challenging. Work-related stress significantly affects productivity, with Beyond Blue reporting that poor mental health costs the Australian economy from $12.2 to 22.5 billion each year \[[Beyond Blue](https://www.beyondblue.org.au/mental-health/work)\]. The complexities of modern work environments, including remote work and job uncertainty, highlight the necessity for effective stress management strategies. MoodNest recognizes the impact of workplace stress on mental health and aims to provide resources for Australians to manage this stress, fostering a healthier work-life balance.
+
+The mental health of young Australians is also a critical concern. According to the Australian Bureau of Statistics (ABS), approximately 26% of young Australians aged 16 to 24 experience mental health disorders \[[ABS](https://www.abs.gov.au/statistics/health/mental-health/mental-health-young-people)\]. This statistic underscores the need for targeted interventions for this demographic.
+
+#### References:
+
+1. World Health Organization (WHO). [Mental Health Statistics](https://www.who.int/news/item/28-09-2001-the-world-health-report-2001-mental-disorders-affect-one-in-four-people).
+2. Australian Institute of Health and Welfare (AIHW). [Mental Health Services in Australia](https://www.aihw.gov.au/mental-health).
+3. Beyond Blue. [Work-related Stress in Australia](https://www.beyondblue.org.au/mental-health/work).
+4. Australian Bureau of Statistics (ABS). [Mental Health of Young People](https://www.abs.gov.au/statistics/health/mental-health/mental-health-young-people).
+
+
 
 ---
 
@@ -155,9 +170,9 @@ The imperative to address mental health challenges through the development of *M
    - The ongoing impact of the COVID-19 pandemic has heightened mental health concerns globally, including in Australia. *MoodNest* recognizes the need for responsive tools to navigate the post-pandemic mental health landscape. Addressing the emotional fallout from the pandemic is crucial for individual and collective recovery.
 
 8. **Strategic ReDocumentation Allocation:**
-   - By addressing mental health concerns through *MoodNest*, there is an opportunity to strategically allocate reDocumentations. Proactive mental health management can potentially alleviate the burden on traditional healthcare services, allowing for more efficient reDocumentation utilization and a more equitable distribution of mental health support.
+   - By addressing mental health concerns through *MoodNest*, there is an opportunity to strategically allocate reDocumentations. Proactive mental health management can potentially alleviate the burden on traditional healthcare services, allowing for more efficient reDocumentation utilisation and a more equitable distribution of mental health support.
 
-In conclusion, the problem of untreated mental health challenges in Australia is multifaceted, affecting individuals, families, workplaces, and society at large. *MoodNest's* significance lies in its commitment to addressing these challenges head-on by providing a comprehensive and user-centric solution. By doing so, *MoodNest* aims to contribute to a healthier, more resilient, and compassionate society that prioritizes the mental well-being of its individuals.
+In conclusion, the problem of untreated mental health challenges in Australia is multifaceted, affecting individuals, families, workplaces, and society at large. *MoodNest's* significance lies in its commitment to addressing these challenges head-on by providing a comprehensive and user-centric solution. By doing so, *MoodNest* aims to contribute to a healthier, more resilient, and compassionate society that prioritises the mental well-being of its individuals.
 
 ---
 
@@ -248,7 +263,7 @@ An Object-Relational Mapping (ORM) is a powerful tool that facilitates the inter
 7. **Easier Maintenance:**
    - **Benefit:** ORM facilitates easier maintenance by providing a clear separation between the application's business logic and the database interaction code.
 
-In conclusion, an ORM simplifies the interaction between application code and relational databases, offering key functionalities such as object-oriented modeling, automated CRUD operations, and query languages. The benefits include increased productivity, abstraction of database complexities, and improved code maintainability.
+In conclusion, an ORM simplifies the interaction between application code and relational databases, offering key functionalities such as object-oriented modelling, automated CRUD operations, and query languages. The benefits include increased productivity, abstraction of database complexities, and improved code maintainability.
 
 ---
 
@@ -944,7 +959,7 @@ The `ThoughtJournal` model represents a user's thoughts and entries in the syste
 - **entry:** Column storing the actual content of the thought journal entry. It is a text field and is marked as non-nullable, ensuring the presence of meaningful content.
 - **timestamp:** Column capturing the date and time of the journal entry. It defaults to the current time and is non-nullable.
 
-Moreover, the `ThoughtJournal` model has a bidirectional relationship with the `User` model. The `user` attribute allows easy navigation from a thought journal entry back to the associated user, and this relationship is defined using the `db.relationship` function, with `back_populates` indicating the corresponding attribute in the `User` model (`thought_journals`).
+The `ThoughtJournal` model has a bidirectional relationship with the `User` model. The `user` attribute allows easy navigation from a thought journal entry back to the associated user, and this relationship is defined using the `db.relationship` function, with `back_populates` indicating the corresponding attribute in the `User` model (`thought_journals`).
 
 This relationship ensures that each thought journal entry is linked to a specific user, enabling efficient retrieval and management of thought journal data within the broader context of user interactions.
 
@@ -962,7 +977,7 @@ The `MoodEntry` model captures information about a user's mood at a specific mom
 - **note:** Column for additional notes about the mood entry, which can be null.
 - **timestamp:** Column capturing the date and time of the mood entry. Defaults to the current time and cannot be null.
 
-Moreover, the `MoodEntry` model has a bidirectional relationship with the `User` model. The `user` attribute allows easy navigation from a mood entry back to the associated user, and this relationship is defined using the `db.relationship` function, with `back_populates` indicating the corresponding attribute in the `User` model (`mood_entries`).
+The `MoodEntry` model has a bidirectional relationship with the `User` model. The `user` attribute allows easy navigation from a mood entry back to the associated user, and this relationship is defined using the `db.relationship` function, with `back_populates` indicating the corresponding attribute in the `User` model (`mood_entries`).
 
 This relationship ensures that each mood entry is associated with a specific user, facilitating efficient retrieval and management of mood-related data within the broader context of user interactions.
 
@@ -981,7 +996,7 @@ The `Goal` model represents user-defined goals within the system. It maintains a
 - **status:** Column indicating the status of the goal, with a default value of "Pending" and cannot be null.
 - **created_at:** Timestamp column capturing the date and time when the goal was created. Defaults to the current time and cannot be null.
 
-Moreover, the `Goal` model has a bidirectional relationship with the `User` model. The `user` attribute allows easy navigation from a goal back to the associated user, and this relationship is defined using the `db.relationship` function, with `back_populates` indicating the corresponding attribute in the `User` model (`goals`).
+The `Goal` model has a bidirectional relationship with the `User` model. The `user` attribute allows easy navigation from a goal back to the associated user, and this relationship is defined using the `db.relationship` function, with `back_populates` indicating the corresponding attribute in the `User` model (`goals`).
 
 This relationship ensures that each goal is associated with a specific user, enabling efficient retrieval and management of goal-related data within the broader context of user interactions.
 
@@ -997,7 +1012,7 @@ The `ActivityLog` model records user activities within the system. It establishe
 - **activity:** Column for the recorded activity, cannot be null.
 - **timestamp:** Timestamp column capturing the date and time of the activity log entry. Defaults to the current time and can be null.
 
-Moreover, the `ActivityLog` model has a bidirectional relationship with the `User` model. The `user` attribute allows easy navigation from an activity log entry back to the associated user, and this relationship is defined using the `db.relationship` function, with `back_populates` indicating the corresponding attribute in the `User` model (`activity_logs`).
+The `ActivityLog` model has a bidirectional relationship with the `User` model. The `user` attribute allows easy navigation from an activity log entry back to the associated user, and this relationship is defined using the `db.relationship` function, with `back_populates` indicating the corresponding attribute in the `User` model (`activity_logs`).
 
 This relationship ensures that each activity log entry is linked to a specific user, facilitating the retrieval and analysis of user activities within the broader system.
 
