@@ -1092,3 +1092,9 @@ Please see images below.
 ![discord3](/docs/discord3.png)
 
 ![discord4](/docs/discord4.png)
+
+---
+
+![commit1](/docs/commits1.png)
+
+![commit2](/docs/commits2.png)
