@@ -8,8 +8,10 @@
 
 ---
 
+
 ## Table of Contents
 
+* [Installation - MacOS/Windows](#installation)
 * [R1 - Identification of the problem you are trying to solve by building this particular app](#r1---identification-of-the-problem-you-are-trying-to-solve-by-building-this-particular-app)
 * [R2 - Why is it a problem that needs solving?](#r2---why-is-it-a-problem-that-needs-solving)
 * [R3 - Why have you chosen this database system. What are the drawbacks compared to others?](#r3---why-have-you-chosen-this-database-system-what-are-the-drawbacks-compared-to-others)
@@ -23,6 +25,96 @@
 
 
 ---
+
+# Installation
+
+## Mac OS
+
+### Open Terminal and run these commands:
+
+1. Start PostgreSQL server:
+    ```bash
+    psql postgres
+    ```
+2. Create a database:
+    ```bash
+    CREATE DATABASE moodnest
+    ```
+
+### In a second terminal, run these commands:
+
+1. Create a virtual environment:
+    ```bash
+    python3 -m venv .venv
+    ```
+2. Activate the virtual environment:
+    ```bash
+    source .venv/bin/activate
+    ```
+3. Install dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
+4. Run the Flask application:
+    ```bash
+    flask run
+    ```
+5. Create the database:
+    ```bash
+    flask db create
+    ```
+6. Seed the database:
+    ```bash
+    flask db seed
+    ```
+
+### Open your choice of API client (e.g., Insomnia, Postman) and use the following URL:
+http://127.0.0.1:5555 or localhost:5555
+
+
+## Windows (WSL)
+
+### Open WSL command line and run these commands:
+
+1. Start PostgreSQL server:
+    ```bash
+    sudo service postgresql start
+    psql
+    create database moodnest
+    ```
+
+### In a second WSL command line, run these commands:
+
+1. Create a virtual environment:
+    ```bash
+    python3 -m venv .venv
+    ```
+2. Activate the virtual environment (if not automatically activated):
+    ```bash
+    source .venv/bin/activate
+    ```
+3. Install dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
+4. Run the Flask application:
+    ```bash
+    flask run
+    ```
+5. Create the database:
+    ```bash
+    flask db create
+    ```
+6. Seed the database:
+    ```bash
+    flask db seed
+    ```
+
+### Open your choice of API client (e.g., Insomnia, Postman) and use the following URL:
+http://127.0.0.1:5555 or localhost:5555
+
+---
+
 
 ### R1 - Identification of the problem you are trying to solve by building this particular app.
 In the contemporary landscape, mental health has emerged as a critical facet of overall well-being, with an increasing global awareness of the huge impact of mental health challenges on individuals and societies. The problem at hand revolves around the substantial gap between the prevalence of mental health concerns and the accessibility of effective tools for daily mental well-being check-ins and management.  *MoodNest* endeavours to address this multifaceted challenge by providing a comprehensive and user-centric mental health check-in platform.
