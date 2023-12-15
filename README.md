@@ -1123,6 +1123,8 @@ Please see images below.
 
 ![discord5](/docs/discord5.png)
 
+![discord6](/docs/discord6.png)
+
 ---
 
 ![commit1](/docs/commits1.png)
